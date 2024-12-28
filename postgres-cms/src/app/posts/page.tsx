@@ -40,7 +40,11 @@ export default function PostListView() {
               </TableCell>
               <TableCell>
                 <Link href={`/posts/${post.id}/edit`} passHref>
-                  <Button className="" variant="default">
+                  <Button
+                    size={"sm"}
+                    className="text-xs uppercase"
+                    variant="outline"
+                  >
                     Edit
                   </Button>
                 </Link>
