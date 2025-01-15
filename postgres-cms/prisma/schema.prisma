@@ -12,3 +12,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Post {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  title      String
+  slug       String
+  excerpt    String
+  category   String
+  tags       String[] // Array of strings for tags
+  coverImage String // Provitional string field for cover image url
+  content    String // Assuming rich text is stored as a string
+}
