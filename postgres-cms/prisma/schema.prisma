@@ -11,7 +11,7 @@ generator client {
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  relationMode = "foreignKeys"
 }
 
 model Post {
@@ -26,6 +26,8 @@ model Post {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   deletedAt  DateTime?
+  User       User?     @relation(fields: [userId], references: [id])
+  userId     String?
 }
 
 model User {
@@ -34,6 +36,7 @@ model User {
   password  String
   sessions  Session[]
   accounts  Account[]
+  posts     Post[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
