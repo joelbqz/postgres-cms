@@ -12,14 +12,17 @@ export const auth = betterAuth({
     baseUrl: process.env.BETTER_AUTH_URL,
     providers: [],
     emailAndPassword: {  
-        enabled: true
+        enabled: true,
+        autoSignIn: false 
     },
+    
     socialProviders: { 
       github: { 
           clientId: process.env.GITHUB_CLIENT_ID || "", 
           clientSecret: process.env.GITHUB_CLIENT_SECRET || "", 
       } 
   }, 
+  
 
 });
 
