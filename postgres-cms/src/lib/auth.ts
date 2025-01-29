@@ -2,28 +2,36 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient({log: ['query', 'info', 'warn', 'error']});
+const prisma = new PrismaClient({
+  log: ['query', 'info', 'warn', 'error'],
+});
 
 export const auth = betterAuth({
-    adapter: prismaAdapter(prisma, {
-        provider: "postgresql"
+    database: prismaAdapter(prisma, {
+        provider: "postgresql",
     }),
-    secret: process.env.BETTER_AUTH_SECRET,
-    baseUrl: process.env.BETTER_AUTH_URL,
-    providers: [],
-    emailAndPassword: {  
+    secret: process.env.BETTER_AUTH_SECRET!,
+    baseUrl: "http://localhost:3000",
+    basePath: "/api/auth",
+    debug: true,
+    emailAndPassword: {
         enabled: true,
-        autoSignIn: false 
-    },
-    
-    socialProviders: { 
-      github: { 
-          clientId: process.env.GITHUB_CLIENT_ID || "", 
-          clientSecret: process.env.GITHUB_CLIENT_SECRET || "", 
-      } 
-  }, 
-  
-
+        debug: true,
+    }
 });
+
+prisma.$connect()
+  .then(() => {
+    console.log('✅ Prisma connected successfully');
+    
+    return prisma.user.findMany();
+  })
+  .then(users => {
+    console.log('✅ Database query successful, found', users.length, 'users');
+  })
+  .catch(e => {
+    console.error('❌ Database error:', e);
+    process.exit(1); 
+  });
 
 export const { handler } = auth;
