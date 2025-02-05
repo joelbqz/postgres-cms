@@ -35,7 +35,8 @@ Represents a user of the CMS.
 
 - **id** (`String`): Unique identifier for the user.
 - **email** (`String`, unique): User's email address.
-- **password** (`String`): Hashed password for authentication.
+- **name** (`String?`): User's name.
+- **image** (`String?`): URL of the user's profile image.
 - **sessions** (`Session[]`): One-to-many relationship with sessions.
 - **accounts** (`Account[]`): One-to-many relationship with accounts (for OAuth).
 - **posts** (`Post[]`): One-to-many relationship with posts authored by the user.
@@ -76,9 +77,8 @@ Represents OAuth accounts linked to a user.
 
 - **id** (`String`): Unique identifier for the account.
 - **userId** (`String`): Foreign key referencing the `User` who owns the account.
-- **user** (`User`): Many-to-one relationship with the `User`.
-- **provider** (`String`): OAuth provider name (e.g., Google, GitHub).
-- **providerAccountId** (`String`): Identifier provided by the OAuth provider.
+- **providerId** (`String`): OAuth provider name (e.g., GitHub).
+- **accountId** (`String`): Identifier provided by the OAuth provider.
 - **accessToken** (`String?`): Access token from the OAuth provider.
 - **refreshToken** (`String?`): Refresh token from the OAuth provider.
 - **createdAt** (`DateTime`): Timestamp of when the account was linked.
@@ -86,11 +86,15 @@ Represents OAuth accounts linked to a user.
 
 ## Setup
 
-[Configuration documentation...]
+1. Set up environment variables:
+   - `BETTER_AUTH_SECRET`
+   - `GITHUB_CLIENT_ID`
+   - `GITHUB_CLIENT_SECRET`
+   - `BETTER_AUTH_BASE_URL`
 
 ## Usage
 
-[Usage documentation...]
+- To log in with GitHub, click the "Sign in with GitHub" button on the home page.
 
 ## Contributing
 
