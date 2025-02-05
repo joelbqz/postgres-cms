@@ -14,51 +14,50 @@ model Post {
   updatedAt  DateTime  @updatedAt
   deletedAt  DateTime?
   title      String
-  slug       String
+  slug       String    @unique
   excerpt    String
   category   String
   tags       String[]
   coverImage String
   content    String
-  userId     String?
-  User       User?     @relation(fields: [userId], references: [id])
+  published  Boolean   @default(false)
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
   id            String    @id @default(cuid())
   name          String?
-  email         String    @unique
-  emailVerified Boolean   @default(false)
+  email         String?   @unique
+  emailVerified Boolean?
   image         String?
-  password      String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  posts         Post[]
   accounts      Account[]
   sessions      Session[]
-
-  @@map("user")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  posts         Post[] // Posts related to the user
 }
 
 model Session {
   id        String   @id @default(cuid())
   userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   token     String
   expiresAt DateTime
   ipAddress String?
   userAgent String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
 
-  @@map("session")
+  @@index([userId])
 }
 
 model Account {
   id                    String    @id @default(cuid())
   userId                String
-  provider              String
-  providerAccountId     String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId             String
+  providerId            String
   accessToken           String?
   refreshToken          String?
   accessTokenExpiresAt  DateTime?
@@ -67,13 +66,9 @@ model Account {
   idToken               String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
-  accountId             String
-  providerId            String
-  password              String?
-  user                  User      @relation(fields: [userId], references: [id])
 
-  @@unique([provider, providerAccountId])
-  @@map("account")
+  @@unique([providerId, accountId])
+  @@index([userId])
 }
 
 model Verification {

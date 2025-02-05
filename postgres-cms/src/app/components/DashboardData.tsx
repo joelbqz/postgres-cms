@@ -25,6 +25,13 @@ export default function DashboardData() {
     redirect("/");
     return null;
   }
+  console.log(session);
+  console.log(session.user);
+  console.log(session.user?.image);
+
+  const loaderProp = ({ src }: { src: string }) => {
+    return src;
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -39,6 +46,8 @@ export default function DashboardData() {
                   fill
                   className="rounded-full object-cover"
                   priority
+                  unoptimized
+                  loader={loaderProp}
                 />
               )}
             </div>
