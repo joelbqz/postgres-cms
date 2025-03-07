@@ -22,6 +22,7 @@ export const auth = betterAuth({
         },
         verify: (state: string) => {
             console.log(state);
+            
             return true;
         },
     }
