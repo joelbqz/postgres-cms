@@ -10,6 +10,10 @@ export const auth = betterAuth({
     }),
     secret: process.env.BETTER_AUTH_SECRET!,
     baseUrl: process.env.BETTER_AUTH_BASE_URL!,
+    emailAndPassword: {
+        enabled: true,
+        autoSignIn: true,
+    },
     socialProviders: {
         github: { 
             clientId: process.env.GITHUB_CLIENT_ID as string,
